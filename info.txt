@@ -1,0 +1,47 @@
+poznamky:
+1.
+https://www.youtube.com/watch?v=YFl2mCHdv24
+
+--build
+docker build -t hello-world
+
+--spustenie
+docker run -p 8080:80 hello-world --> pri 80:80 vyskyt chyby, obsadeny port?
+
+--pouzitie Volumes
+	- prepojenie kontajnerov
+	- prepojenie host a kontajner
+	
+docker run -p 8080:80 -v C:\Users\tkrchnak\Desktop\__TEMP\_docker\src:/var/www/html/ hello-world
+--> C:\Users\tkrchnak\Desktop\__TEMP\_docker\src je skopirovane do '/var/www/html/'
+
+2.
+https://www.youtube.com/watch?v=Qw9zlE3t8Ko
+
+--dockercompose
+	version: '3'
+
+	services:
+		product-service: --> 1. kontajner
+			build: ./product
+			volumes:
+				- ./product:/usr/src/app
+			ports:
+				- 5001:80
+				
+		website: --> 2. kontajner
+			image: php:apache
+			volumes:
+				- ./website:/var/www/html
+			ports:
+				- 5000:80
+			depends_on:
+				- product-service
+				
+- pouzit prikaz: 
+	- 'docker-compose up' pre spustenie
+	- 'docker-compose up -d' --> detached kontajnery??
+	- 'docker-compose stop' -->vypnutie
+-----
+3. Deploy Docker Containers with Docker Cloud
+https://www.youtube.com/watch?v=F82K07NmRpk
